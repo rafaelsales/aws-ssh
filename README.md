@@ -40,10 +40,32 @@ Options:
     --help             Shows help
 ```
 
+**SSH into multiple servers at once**
+
+You can observe the last line of the output contains a whitespace-separated list of servers. We can use that as an input to a Cluster-SSH tool in order to SSH into multiple servers at once. I’m gonna use [tmux-cssh](https://github.com/dennishafemann/tmux-cssh) for example:
+
+```sh-session
+$ tmux-cssh $(awssh -so prod.*app | tail -1)
+```
+
+You can also create an alias your bash/zsh initialization script to make this even more handy:
+
+Define the alias:
+
+```
+alias tmux_aws="tmux_aws_fn"
+tmux_aws_fn() {
+  tmux-cssh $(aws-ssh -so $1 | tail -1)
+}
+```
+
+Now you can just do `tmux_aws prod.*app` to SSH into all servers that match this regex
+
+
 DEFAULT OPTIONS
 ---------------
 
-Use the [.awssh](https://github.com/buzzstarter/awssh/blob/master/.awssh) as
+Use the [.awssh.sample](https://github.com/buzzstarter/awssh/blob/master/.awssh.sample) as
 template to set default options.
 
 Contributing
