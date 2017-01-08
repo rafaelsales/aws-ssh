@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.email         = ['rafaelcds@gmail.com']
   gem.homepage      = 'https://github.com/buzzstarter/aws-ssh'
   gem.license       = 'MIT'
-  gem.version       = '1.0.2'
+  gem.version       = '1.1.0'
   gem.executables   = ['awssh', 'aws-ssh']
 
   gem.add_dependency  'slop', '~> 4'
