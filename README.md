@@ -3,7 +3,7 @@ AWSSH
 
 A tool that makes easy to ssh into AWS EC2 servers
 
-There's a blog post at [theheartbit.com](http://theheartbit.com/ruby/sqlite/threadsafe/concurrency/2015/08/18/aws-ssh/)
+There's a blog post at [rafaelsales.github.io](https://rafaelsales.github.io/ruby/sqlite/threadsafe/concurrency/2015/08/18/aws-ssh/)
 with some useful examples of using it:
 
 ### Usage

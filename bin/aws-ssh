@@ -11,6 +11,7 @@ module AWSSH
       'format'  => 'ssh',
       'verbose' => false
     }
+    AWS_CONFIG_KEYS = [:profile, :region]
 
     attr_accessor :host_regex
 
@@ -23,7 +24,7 @@ module AWSSH
       shout "Options: #{cli.to_h.inspect}"
       shout "Defaults: #{defaults.inspect}"
 
-      Aws.config.merge!(profile: cli[:profile], region: cli[:region])
+      Aws.config.merge!(cli.to_h.select { |key| AWS_CONFIG_KEYS.include?(key) })
 
       cli['show-only'] ? print_output : ssh!
     end
@@ -47,6 +48,10 @@ Examples:
 
   # All hosts in one-line (suitable for CSSH):
   worker@10.20.30.40 worker@10.20.30.41
+
+The config file .awssh is looked up in following directories:
+  ./ (current directory)
+  ~/ ($HOME directory)
         USAGE
 
         o.separator "Options:"
@@ -86,8 +91,9 @@ Examples:
 
     def defaults
       @defaults ||= begin
-        defaults = File.exist?('.awssh') ? YAML.load_file('.awssh') : {}
-        DEFAULT_OPTIONS.merge(defaults)
+        defaults = YAML.load_file('.awssh') if File.exist?('.awssh')
+        defaults ||= YAML.load_file("#{ENV['HOME']}/.awssh") if File.exist?("#{ENV['HOME']}/.awssh")
+        DEFAULT_OPTIONS.merge(defaults) if defaults
       end
     end
 
