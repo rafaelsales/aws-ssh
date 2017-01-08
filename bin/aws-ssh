@@ -70,9 +70,11 @@ The config file .awssh is looked up in following directories:
     end
 
     def ssh!
-      if instances.size > 1
+      if instances.empty?
+        exit_error! "No hostname matched."
+      elsif instances.size > 1
         print_output
-        exit_error! "\nMultiple hostnames matched. Please be more specific in hostnames regex or use the last output line to use CSSH.\n"
+        exit_error! "\nMultiple hostnames matched. Please be more specific in hostnames regex or use the last output line to use CSSH."
       end
       exec "ssh #{connection_string(instances.first)}"
     end
@@ -107,6 +109,7 @@ The config file .awssh is looked up in following directories:
 
     def exit_error!(msg)
       $stderr.puts msg
+      $stderr.puts
       exit(1)
     end
 
@@ -142,8 +145,8 @@ The config file .awssh is looked up in following directories:
           next unless word_match?(instance.stack_name, stack_regex, case_sensitive)
         end
         if host_regex
-          next unless word_match?(instance.hostname, host_regex, case_sensitive)
-          next unless word_match?(instance.name, host_regex, case_sensitive)
+          next unless word_match?(instance.hostname, host_regex, case_sensitive) ||
+                      word_match?(instance.name, host_regex, case_sensitive)
         end
 
         instance
