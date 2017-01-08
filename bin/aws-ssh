@@ -79,7 +79,7 @@ The config file .awssh is looked up in following directories:
 
     def print_output
       instances.each do |i|
-        puts "ssh #{connection_string(i)}      \t => #{i.name}"
+        puts "ssh #{connection_string(i).ljust(30, ' ')} => #{i.name}"
       end
       puts "\n# All hosts in one-line (suitable for CSSH):"
       puts instances.map { |i| connection_string(i) }.join(' ')
