@@ -5,9 +5,9 @@ Gem::Specification.new do |gem|
   gem.description   = gem.summary
   gem.authors       = ['Rafael Sales']
   gem.email         = ['rafaelcds@gmail.com']
-  gem.homepage      = 'https://github.com/buzzstarter/aws-ssh'
+  gem.homepage      = 'https://github.com/rafaelsales/aws-ssh'
   gem.license       = 'MIT'
-  gem.version       = '1.1.0'
+  gem.version       = '1.1.1'
   gem.executables   = ['awssh', 'aws-ssh']
 
   gem.add_dependency  'slop', '~> 4'
