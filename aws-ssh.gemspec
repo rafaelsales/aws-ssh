@@ -7,8 +7,8 @@ Gem::Specification.new do |gem|
   gem.email         = ['rafaelcds@gmail.com']
   gem.homepage      = 'https://github.com/rafaelsales/aws-ssh'
   gem.license       = 'MIT'
-  gem.version       = '1.1.1'
-  gem.executables   = ['awssh', 'aws-ssh']
+  gem.version       = '1.2.0'
+  gem.executables   = ['aws-ssh', 'awssh']
 
   gem.add_dependency  'slop', '~> 4'
   gem.add_dependency  'aws-sdk', '~> 2'

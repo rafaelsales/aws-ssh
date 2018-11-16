@@ -1,4 +1,4 @@
-AWSSH
+AWS-SSH
 -----
 
 A tool that makes easy to ssh into AWS EC2 servers
@@ -10,18 +10,18 @@ with some useful examples of using it:
 
 ```
 $ gem install aws-ssh
-$ bundle exec awssh --help
+$ bundle exec aws-ssh --help
 
-awssh - a tool that makes easy to ssh into AWS EC2 servers
+aws-ssh - a tool that makes easy to ssh into AWS EC2 servers
 
-Usage: awssh [hostname regex]
+Usage: aws-ssh [hostname regex]
 
 Examples:
-  $ awssh prod.*app2
+  $ aws-ssh prod.*app2
   ... will SSH into the instance and you will see:
   user@prod-rails-app4~$
 
-  $ awssh --show-only --stack qa -u worker
+  $ aws-ssh --show-only --stack qa -u worker
   ... will show all instances registered in QA stack of Opsworks
   ssh worker@10.20.30.40        => MyApp QA - qa-rails-app
   ssh worker@10.20.30.41        => MyApp QA - qa-sidekiq
@@ -31,9 +31,9 @@ Examples:
 
 Options:
     -s, --stack        AWS OpsWorks Stack name regex. E.g: `-s prod` will match "Production" stack name
-    -p, --profile      AWS config profile name. Default: profile set in .awssh file
-    -r, --region       AWS region. E.g: us-east-1. Default: region set in .awssh file
-    -u, --user         SSH username to use. Default: user set in .awssh file or current machine user
+    -p, --profile      AWS config profile name. Default: profile set in .aws-ssh file
+    -r, --region       AWS region. E.g: us-east-1. Default: region set in .aws-ssh file
+    -u, --user         SSH username to use. Default: user set in .aws-ssh file or current machine user
     -so, --show-only   Only show the matched hosts instead of ssh. Default: false
     -cs, --csensitive  Use case-sensitive for regex matching. Default: false
     -v, --verbose      Verbose mode. Default: false
@@ -45,7 +45,7 @@ Options:
 You can observe the last line of the output contains a whitespace-separated list of servers. We can use that as an input to a Cluster-SSH tool in order to SSH into multiple servers at once. I’m gonna use [tmux-cssh](https://github.com/dennishafemann/tmux-cssh) for example:
 
 ```sh-session
-$ tmux-cssh $(awssh -so prod.*app | tail -1)
+$ tmux-cssh $(aws-ssh -so prod.*app | tail -1)
 ```
 
 You can also create an alias your bash/zsh initialization script to make this even more handy:
@@ -65,13 +65,13 @@ Now you can just do `tmux_aws prod.*app` to SSH into all servers that match this
 DEFAULT OPTIONS
 ---------------
 
-Use the [.awssh.sample](https://github.com/buzzstarter/awssh/blob/master/.awssh.sample) as
+Use the [.aws-ssh.sample](https://github.com/rafaelsales/aws-ssh/blob/master/.aws-ssh.sample) as
 template to set default options.
 
 Contributing
 ------------
 
-1. Fork it ( https://github.com/buzzstarter/awssh/fork )
+1. Fork it ( https://github.com/rafaelsales/aws-ssh/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -80,4 +80,4 @@ Contributing
 License
 -------
 
-Please see [LICENSE](https://github.com/buzzstarter/awssh/blob/master/LICENSE) for licensing details.
+Please see [LICENSE](https://github.com/rafaelsales/aws-ssh/blob/master/LICENSE) for licensing details.

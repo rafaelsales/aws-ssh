@@ -4,7 +4,7 @@ require 'slop'
 require 'aws-sdk'
 require 'yaml'
 
-module AWSSH
+module AWSSSH
   class Runner
     DEFAULT_OPTIONS = {
       'user'    => ENV['user'],
@@ -32,16 +32,16 @@ module AWSSH
     def cli
       @cli ||= Slop.parse do |o|
         o.banner = <<-USAGE
-awssh - a tool that makes easy to ssh into AWS EC2 servers
+aws-ssh - a tool that makes easy to ssh into AWS EC2 servers
 
-Usage: awssh [hostname regex]
+Usage: aws-ssh [hostname regex]
 
 Examples:
-  $ awssh prod.*app2
+  $ aws-ssh prod.*app2
   ... will SSH into the instance and you will see:
   user@prod-rails-app4~$
 
-  $ awssh --show-only --stack qa -u worker
+  $ aws-ssh --show-only --stack qa -u worker
   ... will show all instances registered in QA stack of Opsworks
   ssh worker@10.20.30.40        => MyApp QA - qa-rails-app
   ssh worker@10.20.30.41        => MyApp QA - qa-sidekiq
@@ -49,16 +49,16 @@ Examples:
   # All hosts in one-line (suitable for CSSH):
   worker@10.20.30.40 worker@10.20.30.41
 
-The config file .awssh is looked up in following directories:
+The config file .aws-ssh is looked up in following directories:
   ./ (current directory)
   ~/ ($HOME directory)
         USAGE
 
         o.separator "Options:"
         o.string '-s',  '--stack',      'AWS OpsWorks Stack name regex. E.g: `-s prod` will match "Production" stack name'
-        o.string '-p',  '--profile',    'AWS config profile name. Default: profile set in .awssh file', default: defaults['profile']
-        o.string '-r',  '--region',     'AWS region. E.g: us-east-1. Default: region set in .awssh file', default: defaults['region']
-        o.string '-u',  '--user',       'SSH username to use. Default: user set in .awssh file or current machine user', default: defaults['user']
+        o.string '-p',  '--profile',    'AWS config profile name. Default: profile set in .aws-ssh file', default: defaults['profile']
+        o.string '-r',  '--region',     'AWS region. E.g: us-east-1. Default: region set in .aws-ssh file', default: defaults['region']
+        o.string '-u',  '--user',       'SSH username to use. Default: user set in .aws-ssh file or current machine user', default: defaults['user']
         o.bool   '-so', '--show-only',  'Only show the matched hosts instead of ssh. Default: false', default: false
         o.bool   '-cs', '--csensitive', 'Use case-sensitive for regex matching. Default: false', default: false
         o.bool   '-v',  '--verbose',    'Verbose mode. Default: false', default: false
@@ -93,8 +93,12 @@ The config file .awssh is looked up in following directories:
 
     def defaults
       @defaults ||= begin
-        defaults = YAML.load_file('.awssh') if File.exist?('.awssh')
-        defaults ||= YAML.load_file("#{ENV['HOME']}/.awssh") if File.exist?("#{ENV['HOME']}/.awssh")
+        if File.exist?('.awssh') || File.exist?("#{ENV['HOME']}/.awssh")
+          puts 'WARNING: please rename the config file .awssh to .aws-ssh'
+          exit(1)
+        end
+        defaults = YAML.load_file('.aws-ssh') if File.exist?('.aws-ssh')
+        defaults ||= YAML.load_file("#{ENV['HOME']}/.aws-ssh") if File.exist?("#{ENV['HOME']}/.aws-ssh")
         DEFAULT_OPTIONS.merge(defaults) if defaults
       end
     end
@@ -164,4 +168,4 @@ The config file .awssh is looked up in following directories:
   end
 end
 
-AWSSH::Runner.new.run
+AWSSSH::Runner.new.run
