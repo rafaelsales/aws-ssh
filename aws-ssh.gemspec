@@ -11,5 +11,6 @@ Gem::Specification.new do |gem|
   gem.executables   = ['aws-ssh', 'awssh']
 
   gem.add_dependency  'slop', '~> 4'
-  gem.add_dependency  'aws-sdk', '~> 2'
+  gem.add_dependency  'aws-sdk-ec2', '~> 1'
+  gem.add_dependency  'nokogiri', '>= 1.11.0'
 end
